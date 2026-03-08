@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>x7 Sebas Panel - Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>x7 Sebas Panel</h1>
+                <div class="header-right">
+                    <span id="userEmail" class="user-email"></span>
+                    <span id="userBalance" class="user-balance" style="display: none;">💰 $0.00</span>
+                    <button id="tutorialBtn" class="btn-admin" title="Ver tutoriales">Tutoriales</button>
+                    <button id="keysBtn" class="btn-admin" style="display: none;" title="Ver mis keys">Mis Keys</button>
+                    <button id="canjearBtn" class="btn-redeem" style="display: none;" title="Canjear códigos">Canjear</button>
+                    <button id="canjesBtn" class="btn-admin" style="display: none;" title="Crear códigos de canje">Códigos</button>
+                    <button id="adminBtn" class="btn-admin" style="display: none;">Admin</button>
+                    <button id="logoutBtn" class="btn-logout" style="display: none;">Cerrar sesión</button>
+                    <button id="loginBtn" class="btn-login">Iniciar sesión</button>
+                </div>
+            </div>
+            <p class="subtitle">Tienda Oficial</p>
+        </div>
+    </header>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Iniciar Sesión</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña:</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Inicia sesión</button>
+                </form>
+                <p class="modal-footer">¿No tienes cuenta? <a href="#" id="goToRegister">Regístrate</a></p>
+                <div id="loginMessage" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Mis Keys -->
+    <div id="keysModal" class="modal hidden">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h2>Mis Keys Compradas</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="purchasedKeysList" class="purchased-keys-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Registro -->
+    <div id="registerModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Registrarse</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña:</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmar contraseña:</label>
+                        <input type="password" id="registerConfirm" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Registrarse</button>
+                </form>
+                <p class="modal-footer">¿Ya tienes cuenta? <a href="#" id="goToLogin">Inicia sesión</a></p>
+                <div id="registerMessage" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Canjear Códigos -->
+    <div id="canjearModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Canjear Código</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="balance-section">
+                    <div class="balance-box">
+                        <p class="balance-label">Saldo Disponible:</p>
+                        <p class="balance-amount" id="balanceDisplay">$0.00</p>
+                    </div>
+                </div>
+                <form id="canjearForm">
+                    <div class="form-group">
+                        <label>Ingresa el código de canje:</label>
+                        <input type="text" id="codigoInput" placeholder="Ej: ABC12XYZ" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Canjear Código</button>
+                </form>
+                <div id="canjearMessage" class="message"></div>
+                <div id="historialCanje" class="historial-section"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Códigos de Canje -->
+    <div id="canjesModal" class="modal hidden">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h2>Crear Códigos de Canje</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="canjesForm">
+                    <div class="form-group">
+                        <label>Monto por código ($):</label>
+                        <input type="number" id="canjesMonto" min="1" max="10000" value="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad de códigos:</label>
+                        <input type="number" id="canjesCantidad" min="1" max="100" value="5" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Generar Códigos</button>
+                </form>
+                <div id="canjesMessage" class="message"></div>
+                <div id="canjesList" class="canjes-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Admin -->
+    <div id="adminModal" class="modal hidden">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h2>Panel de Administrador</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="adminForm">
+                    <div class="form-group">
+                        <label>Seleccionar Plan:</label>
+                        <select id="adminPlan">
+                            <option value="">-- Elige un plan --</option>
+                            <option value="1-dia">1 Dia - $0.5 USD</option>
+                            <option value="7-dias">7 Dias - $8 USD</option>
+                            <option value="15-dias">15 Dias - $14 USD</option>
+                            <option value="30-dias">30 Dias - $20 USD</option>
+                            <option value="permanente">Permanente - $35 USD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Keys (una por línea):</label>
+                        <textarea id="adminKeys" placeholder="KEY1&#10;KEY2&#10;KEY3" rows="6"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Agregar Keys</button>
+                </form>
+                <div id="adminMessage" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <main class="container">
+        <section class="hero-banner">
+            <p class="hero-kicker">x7 Sebas Panel Store</p>
+            <h2>LA TIENDA GAMING PARA LOS MEJORES ARCHIVOS</h2>
+            <p class="hero-text">Entrega rapida, soporte activo y acceso inmediato despues de comprar.</p>
+            <div class="hero-stats">
+                <span>5K+ Gamers</span>
+                <span>10K+ Ventas</span>
+                <span>Soporte 24/7</span>
+            </div>
+        </section>
+
+        <section class="products-section-head">
+            <p class="head-kicker">Catalogo</p>
+            <h3>Todos nuestros productos</h3>
+        </section>
+
+        <div id="stockInfo" class="stock-info"></div>
+        <div class="products-grid" id="productsGrid">
+            <!-- Tarjetas se generarán con JavaScript -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 x7 Sebas Panel - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <a
+        href="https://wa.me/529621406226"
+        class="whatsapp-float"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contactar por WhatsApp"
+        title="WhatsApp: +52 962 140 6226"
+    >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.52 3.48A11.88 11.88 0 0 0 12.04 0C5.42 0 .04 5.38.04 12a11.9 11.9 0 0 0 1.6 5.98L0 24l6.2-1.62A11.96 11.96 0 0 0 12.04 24h.01c6.62 0 12-5.38 12-12a11.9 11.9 0 0 0-3.53-8.52zm-8.47 18.5h-.01a9.95 9.95 0 0 1-5.07-1.39l-.36-.21-3.68.96.98-3.58-.23-.37A9.93 9.93 0 0 1 2.04 12c0-5.52 4.49-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.9 9.9 0 0 1 22.04 12c0 5.51-4.49 10-10 10zm5.48-7.47c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.69.15-.2.3-.79.97-.97 1.17-.18.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5a9.02 9.02 0 0 1-1.67-2.07c-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.69-1.67-.94-2.3-.25-.6-.5-.52-.69-.53h-.59c-.2 0-.52.07-.8.37-.28.3-1.05 1.02-1.05 2.48 0 1.47 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.62.71.23 1.35.2 1.86.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.18-1.42-.08-.12-.28-.2-.58-.35z"/>
+        </svg>
+    </a>
+
+    <a
+        href="https://discord.gg/ubmp7gqC"
+        class="discord-float"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Entrar al Discord"
+        title="Unirse al Discord"
+    >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.32 4.37A19.8 19.8 0 0 0 15.4 2.8a.08.08 0 0 0-.08.04 13.8 13.8 0 0 0-.62 1.27 18.4 18.4 0 0 0-5.4 0 12.6 12.6 0 0 0-.63-1.27.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.92 1.57.07.07 0 0 0-.03.03C.53 9.06-.32 13.6.1 18.08c0 .03.02.06.04.08A20 20 0 0 0 6.2 21.2a.08.08 0 0 0 .09-.03c.47-.65.9-1.33 1.28-2.04a.08.08 0 0 0-.04-.11 13.3 13.3 0 0 1-1.8-.86.08.08 0 0 1-.01-.13c.12-.09.24-.19.35-.29a.08.08 0 0 1 .08-.01 14.2 14.2 0 0 0 12.1 0 .08.08 0 0 1 .08 0c.11.1.23.2.35.3a.08.08 0 0 1 0 .13c-.57.34-1.17.63-1.8.85a.08.08 0 0 0-.05.12c.39.7.82 1.38 1.29 2.03a.08.08 0 0 0 .09.03 19.9 19.9 0 0 0 6.06-3.03.08.08 0 0 0 .04-.08c.5-5.18-.84-9.68-3.55-13.68a.06.06 0 0 0-.03-.03zM8.02 15.35c-1.18 0-2.15-1.08-2.15-2.4 0-1.32.95-2.4 2.15-2.4 1.2 0 2.16 1.09 2.15 2.4 0 1.32-.95 2.4-2.15 2.4zm7.96 0c-1.19 0-2.15-1.08-2.15-2.4 0-1.32.95-2.4 2.15-2.4 1.2 0 2.16 1.09 2.15 2.4 0 1.32-.95 2.4-2.15 2.4z"/>
+        </svg>
+    </a>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
